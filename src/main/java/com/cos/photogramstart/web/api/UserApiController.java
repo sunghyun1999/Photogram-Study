@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -57,5 +58,13 @@ public class UserApiController {
             principalDetails.setUser(userEntity); // 세션정보 변경
             return new CMRespDto<>(1, "회원수정완료", userEntity); // 응답시에 userEntity의 모든 getter 함수가 호출되고, JSON으로 파싱하여 응답한다.
         }
+    }
+
+    @PutMapping("/api/user/{principalId}/profileImageUrl")
+    public ResponseEntity<?> profileImageUrlUpdate(@PathVariable int principalId, MultipartFile profileImageFile,
+                                                   @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        User userEntity = userService.회원프로필사진변경(principalId, profileImageFile);
+        principalDetails.setUser(userEntity); // 세션 변경
+        return new ResponseEntity<>(new CMRespDto<>(1, "프로필사진변경 성공", null), HttpStatus.OK);
     }
 }
