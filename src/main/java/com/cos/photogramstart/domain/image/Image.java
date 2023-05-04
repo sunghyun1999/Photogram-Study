@@ -1,5 +1,6 @@
 package com.cos.photogramstart.domain.image;
 
+import com.cos.photogramstart.domain.comment.Comment;
 import com.cos.photogramstart.domain.likes.Likes;
 import com.cos.photogramstart.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.core.annotation.Order;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,6 +36,11 @@ public class Image {
     @OneToMany(mappedBy = "image")
     @JsonIgnoreProperties({"image"})
     private List<Likes> likes;
+
+    @OneToMany(mappedBy = "image")
+    @JsonIgnoreProperties({"image"})
+    @OrderBy("id DESC")
+    private List<Comment> comments;
 
     @Transient // DB에 컬럼이 만들어지지 않는다.
     private boolean likeState;
